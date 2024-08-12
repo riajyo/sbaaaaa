@@ -25,22 +25,31 @@ cur = con.cursor()
 # Display all tasks
 def display_tasks():
     # Execute and fetch the results from the database
-    cur.execute("SELECT * From To_Do_List")  
+    cur.execute("SELECT * From Task")  
 
 
 # Add a new task ()
 def add_task(task):
     # Execute and commit the changes to the database
-    cur.execute("INSERT To_Do_List Values ")  # TODO: Delete this line when you start implementing the function
+    cur.execute("INSERT INTO Task Values (Name , Category, Current)") 
 
+# delete task
+def del_task(task):
+    ...
 
-# TODO: Implement additional functions as needed before the main loop
+# update task
+def up_task():
+    ...
+
+# list the uncompleted task
+def uncompleted(task):
+    ...
+
 
 
 # Main loop
 while True:
-    pass  # TODO: Delete this line when you start implementing the main loop
-
+    pass  
     # Print user menu
     # ...
 

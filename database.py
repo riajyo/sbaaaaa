@@ -16,7 +16,7 @@ cur.execute(
         TID INTEGER PRIMARY KEY AUTOINCREMENT,
         Name TEXT NOT NULL,
         Category TEXT,
-        Current BLOB NOT NULL DEFAULT FALSE ,
+        Current BLOB DEFAULT FALSE ,
         List_id INTEGER,
         FOREIGN KEY (List_id) REFERENCES List(LID)
     )
