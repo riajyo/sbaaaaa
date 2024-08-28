@@ -20,7 +20,6 @@ con.commit()
 # - https://sqlite.org/foreignkeys.html
 cur.execute("DROP TABLE IF EXISTS Task")
 cur.execute("DROP TABLE IF EXISTS List")
-cur.execute("DROP TABLE IF EXISTS DoFirst")
 con.commit()
 
 # Initialize the database tables if not exist
@@ -33,6 +32,8 @@ cur.execute(
         Category TEXT,
         Current BLOB DEFAULT FALSE ,
         List_id INTEGER,
+        Priority BLOB DEFAULT FALSE,
+        Deadline TEXT NOT NULL,
         FOREIGN KEY (List_id) REFERENCES List(LID)
     )
     """
@@ -50,17 +51,6 @@ cur.execute(
 )
 con.commit()
 
-cur.execute(
-    """
-    CREATE TABLE DoFirst (
-        Task_id INTEGER PRIMARY KEY,
-        Priority INTEGER,
-        Deadline TEXT NOT NULL,
-        FOREIGN KEY (Task_id) REFERENCES Task(TID)
-    )
-    """
-)
-con.commit()
 
 # Display all tasks
 def display_tasks(stdscr):
@@ -71,7 +61,7 @@ def display_tasks(stdscr):
         stdscr.addstr(0, 0, "there is no task")
     else:
         for index, row in enumerate(rows):
-            stdscr.addstr(index, 0, f"TID: {row[0]:4} Name: {row[1]:10} Category: {row[2]:10}")
+            stdscr.addstr(index, 0, f"TID: {row[0]:4} Name: {row[1]:10} Category: {row[2]:10} Priority: {row[3]:3} Deadline: {row[4]:10}")
     stdscr.refresh()
     stdscr.getch()
 
@@ -103,8 +93,16 @@ def add_task(stdscr):
     stdscr.clear()
     stdscr.addstr(0, 0, "Input the List_id:")
     stdscr.refresh()
-    List_id = stdscr.getstr().decode('utf-8') 
-    cur.execute("INSERT INTO Task (Name, Category, List_id) VALUES (?, ?, ?)", (Name, Category, List_id))
+    List_id = stdscr.getstr().decode('utf-8')
+    stdscr.clear()
+    stdscr.addstr(0, 0, "Input the priority(True or False):")
+    stdscr.refresh()
+    priority = stdscr.getstr().decode('utf-8')
+    stdscr.clear()
+    stdscr.addstr(0, 0, "Input the Deadline:")
+    stdscr.refresh()
+    deadline = stdscr.getstr().decode('utf-8')
+    cur.execute("INSERT INTO Task (Name, Category, List_id) VALUES (?, ?, ?, ?, ?)", (Name, Category, List_id, priority, deadline))
 
 # Add new list
 def add_list(stdscr):
