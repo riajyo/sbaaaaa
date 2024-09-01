@@ -127,22 +127,22 @@ def add_list(stdscr):
 # delete task
 def del_task(stdscr):
     stdscr.clear()
-    stdscr.addstr(0, 0, "Input the Task Name:")
+    stdscr.addstr(0, 0, "Input the TID:")
     stdscr.refresh()
-    Name = stdscr.getstr().decode('utf-8')
+    TID = stdscr.getstr().decode('utf-8')
     stdscr.clear()
-    cur.execute("DELETE FROM Task WHERE Name = (?)",(Name,))
+    cur.execute("DELETE FROM Task WHERE TID = (?)",(TID,))
     con.commit()
 
 # update task to Complete
 def up_task(stdscr):
     stdscr.clear()
-    stdscr.addstr(0, 0, "Input the Task Name:")
+    stdscr.addstr(0, 0, "Input the TID:")
     stdscr.refresh()
-    Name = stdscr.getstr().decode('utf-8')
+    TID = stdscr.getstr().decode('utf-8')
     stdscr.clear()
     try:
-        cur.execute("UPDATE Task SET Current = True WHERE Name = ?", (Name,))
+        cur.execute("UPDATE Task SET Current = True WHERE TID = ?", (TID,))
         con.commit() 
         stdscr.addstr(1, 0, "Task is updated.")
     except sqlite3.Error as e:
