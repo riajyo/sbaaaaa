@@ -191,7 +191,7 @@ def main(stdscr):
     ]
 
     curses.start_color()
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLUE)
+    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLUE)
     curses.curs_set(0)
     current_selection = 0 
     while True:
