@@ -19,38 +19,7 @@ con.commit()
 # - https://www.sqlite.org/datatype3.html
 # - https://sqlite.org/foreignkeys.html
 
-cur.execute("DROP TABLE IF EXISTS Task")
-cur.execute("DROP TABLE IF EXISTS List")
-con.commit()
 
-# Initialize the database tables if not exist
-# You can complte this step by executing the SQL queries exported from the SQLite3 Editor.
-cur.execute(
-    """
-    CREATE TABLE Task (
-        TID INTEGER PRIMARY KEY AUTOINCREMENT,
-        Name TEXT NOT NULL,
-        Category TEXT,
-        Current INTEGER DEFAULT 0 ,
-        List_id INTEGER,
-        Priority INTEGER DEFAULT 0 ,
-        Deadline TEXT NOT NULL,
-        FOREIGN KEY (List_id) REFERENCES List(LID)
-    )
-    """
-)
-con.commit()
-
-cur.execute(
-    """
-    CREATE TABLE List (
-        LID INTEGER Primary Key AUTOINCREMENT,
-        Name TEXT NOT NULL,
-        Duration TEXT NOT NULL
-    )
-    """
-)
-con.commit()
 
 
 # Display all tasks
@@ -220,6 +189,43 @@ def main(stdscr):
     stdscr.getch()
        
 
+x = int(input("Any existing data?(1 for yes, 0 for no)"))
+while True:
+    if x == 1:
+        curses.wrapper(main)
+        con.close()
+    elif x == 0:
+        cur.execute("DROP TABLE IF EXISTS Task")
+        cur.execute("DROP TABLE IF EXISTS List")
+        con.commit()
+        cur.execute(
+    """
+    CREATE TABLE Task (
+        TID INTEGER PRIMARY KEY AUTOINCREMENT,
+        Name TEXT NOT NULL,
+        Category TEXT,
+        Current INTEGER DEFAULT 0 ,
+        List_id INTEGER,
+        Priority INTEGER DEFAULT 0 ,
+        Deadline TEXT NOT NULL,
+        FOREIGN KEY (List_id) REFERENCES List(LID)
+    )
+    """
+        )
+        con.commit()
 
-curses.wrapper(main)
-con.close()
+        cur.execute(
+    """
+    CREATE TABLE List (
+        LID INTEGER Primary Key AUTOINCREMENT,
+        Name TEXT NOT NULL,
+        Duration TEXT NOT NULL
+    )
+    """
+)
+        con.commit()
+        curses.wrapper(main)
+        con.close()
+    else:
+        print("invalid")
+        break
